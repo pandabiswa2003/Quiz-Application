@@ -1,0 +1,71 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+class Question {
+    private String question;
+    private List<String> options;
+    private int correctAnswerIndex;
+    public Question(String question, List<String> options, int correctAnswerIndex) {
+        this.question = question;
+        this.options = options;
+        this.correctAnswerIndex = correctAnswerIndex;
+    }
+    public String getQuestion() {
+        return question;
+    }
+    public List<String> getOptions() {
+        return options;
+    }
+    public int getCorrectAnswerIndex() {
+        return correctAnswerIndex;
+    }
+}
+public class Quiz {
+    private List<Question> questions;
+    private int score;
+    private int correctAnswers;
+    private int incorrectAnswers;
+    public Quiz() {
+        questions = new ArrayList<>();
+        score = 0;
+        correctAnswers = 0;
+        incorrectAnswers = 0;
+    }
+    public void addQuestion(Question question) {
+        questions.add(question);
+    }
+    public void startQuiz() {
+        @SuppressWarnings("resource")
+        Scanner scanner = new Scanner(System.in);
+        for (Question question : questions) {
+            System.out.println(question.getQuestion());
+            for (int i = 0; i < question.getOptions().size(); i++) {
+                System.out.println((i + 1) + ". " + question.getOptions().get(i));
+            }
+            System.out.print("Enter your answer (1-" + question.getOptions().size() + "): ");
+            int userAnswer = scanner.nextInt();
+            if (userAnswer == question.getCorrectAnswerIndex() + 1) {
+                score += 10;
+                correctAnswers++;
+            } else {
+                incorrectAnswers++;
+            }
+        }
+    }
+
+    public void displayResult() {
+        System.out.println("Quiz Results:");
+        System.out.println("Your score: " + score);
+        System.out.println("Correct answers: " + correctAnswers);
+        System.out.println("Incorrect answers: " + incorrectAnswers);
+    }
+
+    public static void main(String[] args) {
+        Quiz quiz = new Quiz();
+        quiz.addQuestion(new Question("What is the capital of India?", List.of("Delhi", "Mumbai", "Chennai", "Kolkata"), 1));
+        quiz.addQuestion(new Question("Who is the author of the Harry Potter series?", List.of("J.K. Rowling", "Stephen King", "Dan Brown", "Ernest Hemingway"), 1));
+        quiz.startQuiz();
+        quiz.displayResult();
+    }
+}
